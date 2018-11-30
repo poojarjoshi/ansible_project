@@ -16,7 +16,7 @@ Solution:
 1.Have used mysql.yml file to install and configure mysql also for auto restart on server reboot.  
 2.Ansible command to run the mysql.yml file: ansible-playbook mysql.yml -c local --ask-sudo-pass  
   
-#Install and configure two tomcat 7 instances:  
+#Install and configure two tomcat 7 nodes:  
 1.Have used tomcat1.yml file to install and configure tomcat 7's first node and  also for auto restart on server reboot.  
 2.Ansible command to run the tomcat1.yml file: ansible-playbook tomcat1.yml -c local --ask-sudo-pass  
 3.Have used tomcat2.yml file to install and configure tomcat 7's second node and  also for auto restart on server reboot.  
@@ -64,7 +64,7 @@ BalancerMember http://localhost:8090/petstore route=tomcat2
 &lt;/IfModule&gt;  
   
 #Application Deployment details:  
-1.Have downloaded 'petstore' app and deployed in both the tomcat in nodes.  
+1.Have downloaded 'petstore' app and deployed in both the tomcat nodes.  
 2.Have added index.html in both tomcat1 and tomcat2 nodes.  
 3.tomcat1 index.html page content:   
 Hello from tomcat1 ..   
