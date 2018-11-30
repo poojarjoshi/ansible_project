@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+     
+  tasks: 
+   - name: Download tomcat 7
+     get_url: url=http://mirrors.wuchna.com/apachemirror/tomcat/tomcat-7/v7.0.92/bin/apache-tomcat-7.0.92.tar.gz dest=/tmp
+   - name: Extract the file downloaded tomcat file
+     command: tar xvf /tmp/apache-tomcat-7.0.92.tar.gz
+   - name: Rename tomcat dir
+     command: mv apache-tomcat-7.0.92 tomcat2
+   - name: Move tomcat dir to /etc
+     command: mv tomcat2 /etc/
+   - name: copy server.xml file and restart service
+     copy: src={{ item.src }} dest={{ item.catalina_home }}/{{ item.dest }}
+     sudo: true
+     with_items:
+       - { src: 'res/tomcat2.conf.server.xml',dest: 'server.xml',catalina_home: '/etc/tomcat2/conf/' }
+   - name: Start tomcat service
+     command: nohup /etc/tomcat2/bin/startup.sh
+   - name: Enable tomcat2 on server reboot
+     cron:
+      name: "tomcat2 startup script"
+      special_time: reboot
+      job: "/etc/tomcat2/bin/startup.sh" 
+

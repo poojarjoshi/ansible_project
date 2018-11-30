@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  sudo: yes
+
+  tasks: 
+   - name: Install Apache
+     apt: name=apache2 update_cache=yes state=latest
+   - name: Start Apache on reboot
+     service: name=apache2 enabled=yes
+   - name: enable mod_proxy modules
+     command: a2enmod {{ item }}
+     with_items:
+     - proxy
+     - xml2enc
+     - proxy_http 
+     - proxy_balancer
+     - lbmethod_byrequests
+     - rewrite
+     - proxy_ajp
+     - proxy_connect
+   - name: copy apache2.conf file for loadbalancer configuation
+     copy: src={{ item.src }} dest={{ item.dest }}   
+     with_items:
+      - { src: 'res/apache2.conf', dest: '/etc/apache2/apache2.conf' }
+     notify:
+       - restart apache2
+  handlers:
+       - name: restart apache2
+         service: name=apache2 state=restarted

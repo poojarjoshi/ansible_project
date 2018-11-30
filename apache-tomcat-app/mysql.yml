@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  sudo: yes
+
+  tasks: 
+   - name: Install Mysql
+     apt: pkg="mysql-server-5.6" state=latest
+   - name: Enable Mysql service on reboot
+     service: name=mysql enabled=yes
